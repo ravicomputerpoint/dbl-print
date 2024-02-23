@@ -1,0 +1,145 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ravi Computer Point</title>
+    <link rel="shortcut icon" href="Transparent Logo.png" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <style>
+        @media print {
+            .noPrint{
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="container-fluid bg-dark p-3 shadow noPrint">
+        <div class="d-flex justify-content-between align-items-center">
+            <h4 class="text-light">Ravi Computer Point</h4>
+            <img src="https://placehold.co/150x50" alt="">
+        </div>
+    </div>
+    <!-- Main -->
+    <div class="container mt-4 noPrint">
+        <div class="row gy-5">
+            <div class="col-lg-4 col-md-12 col-sm-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5><i class="fa fa-upload"></i> Upload Image</h5>
+                    </div>
+                    <div class="card-body">
+                        <label for="image1">Image 1</label>
+                        <input type="file" class="form-control mt-3 mb-3" oninput="img1.src=window.URL.createObjectURL(this.files[0])" id="pic1">
+                        <label for="image2">Image 2</label>
+                        <input type="file" class="form-control mt-3 mb-3" oninput="img2.src=window.URL.createObjectURL(this.files[0])" id="pic2">
+                        <div class="d-flex justify-content-between">
+                            <button onclick="captureAndDownload()" class="btn btn-success mt-2"><i class="fa fa-download"></i> Download</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-5 col-md-12 col-sm-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5><i class="fa fa-heart text-danger"></i> Final Image</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="d-flex justify-content-center">
+                            <div id="capture" style="display: inline-block; margin: 0;">
+                                <!-- Your HTML content to be captured -->
+                                <img src="" alt="Image 1" width="200px" height="200px" id="img1"><img src="" alt="Image 2" width="200px" height="200px" id="img2">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-12 col-sm-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5><i class="fa fa-print"></i> Print</h5>
+                    </div>
+                    <div class="card-body">
+                        <label for="printimg">Upload Image</label>
+                        <input type="file" class="form-control mt-4 mb-3" oninput="setprint(this)">
+                        <label for="preview" class="mt-2">Image Preview</label>
+                        <img src="" alt="" width="150px" height="150px" class="d-block mt-2 mb-2 rounded" id="preview">
+                        <button class="btn btn-success mt-2 mb-3" onclick="printimg()">
+                            <i class="fa fa-print"></i> Print
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container noPrint">
+        <h3>How To Use This ?</h3>
+        <hr>
+        <video src="How To Use.mp4" autoplay width="100%" controls></video>
+    </div>
+    <div id="printdiv" style="display: none;">
+        &nbsp;&nbsp;&nbsp;&nbsp; <img src='' width='113px' height='139px' border='1px' id="print1" > &nbsp;<img src='' width='113px' height='139px' border='1px' id="print2" > &nbsp;<img src='' width='113px' height='139px' border='1px' id="print3" > &nbsp;<img src='' width='113px' height='139px' border='1px' id="print4" > &nbsp;<img src='' width='113px' height='139px' border='1px' id="print5" > &nbsp;<img src='' width='113px' height='139px' border='1px' id="print6" >
+    </div>
+    <script src="html2canvas.js"></script>
+    <script>
+        function captureAndDownload() {
+            img1.style.display = "block";
+            img2.style.display = "block";
+            img1.style.transform = "rotate(90deg)";
+            img2.style.transform = "rotate(90deg)";
+            // Capture the target element
+            html2canvas(document.getElementById('capture')).then(function(canvas) {
+                // Convert canvas to image
+                var imageData = canvas.toDataURL('image/png');
+
+                // Create an anchor element
+                var a = document.createElement('a');
+                a.href = imageData;
+                a.download = 'captured_image.png'; // Set the download attribute
+                a.style.display = 'none'; // Hide the anchor element
+                
+                // Append anchor to body and trigger the click event
+                document.body.appendChild(a);
+                a.click();
+
+                // Clean up
+                document.body.removeChild(a);
+                img1.style.display = "inline";
+                img2.style.display = "inline";
+                img1.style.transform = "rotate(360deg)";
+                img2.style.transform = "rotate(360deg)";
+            });
+        }
+    </script>
+    <script>
+        function printimg(){
+            printdiv.style.display = "block";
+            try {
+
+                // Attempt to execute this code
+                window.print();
+            } catch (error) {
+                // If an error occurs during execution of the try block,
+                // this block will execute
+                console.error("An error occurred:", error);
+            } finally {
+                // This block will always execute regardless of whether an error occurred or not
+                printdiv.style.display = "none";             
+            }
+        }
+        function setprint(data){
+            preview.src = window.URL.createObjectURL(data.files[0]);
+            print1.src = window.URL.createObjectURL(data.files[0]);
+            print2.src = window.URL.createObjectURL(data.files[0]);
+            print3.src = window.URL.createObjectURL(data.files[0]);
+            print4.src = window.URL.createObjectURL(data.files[0]);
+            print5.src = window.URL.createObjectURL(data.files[0]);
+            print6.src = window.URL.createObjectURL(data.files[0]);
+        }
+    </script>
+  </body>
+</html>
